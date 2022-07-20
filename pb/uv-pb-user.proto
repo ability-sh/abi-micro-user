@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+option go_package = "./;pb";
+
+package user;
+
+message User {
+	string id = 1;
+	string name = 2;
+	string nick = 3;
+	string password = 4;
+	int32 ctime = 5;
+}
+
+message Info {
+	string info = 1;
+}
+
+message String {
+	string value = 1;
+}
+
+message Page {
+	int32 count = 1;
+	int32 p = 2;
+	int32 n = 3;
+	int32 totalCount = 4;
+}
+
+message UserQueryResult {
+	int32 errno = 1;
+	string errmsg = 2;
+
+	Page page = 3;
+	repeated User items = 4;
+}
+
+message UserCreateTask {
+	string name = 1;
+	string nick = 2;
+	string password = 3;
+}
+
+message UserGetTask {
+	string uid = 1;
+	string name = 2;
+	string nick = 3;
+	bool autoCreated = 4;
+}
+
+message UserSetTask {
+	string uid = 1;
+	String name = 2;
+	String nick = 3;
+	String password = 4;
+}
+
+message UserQueryTask {
+	string q = 1;
+	int32 p = 2;
+	int32 n = 3;
+}
+
+message AppQueryTask {
+	string q = 1;
+	int32 p = 2;
+	int32 n = 3;
+}
+
+message InfoSetTask {
+	string uid = 1;
+	string key = 2;
+	string info = 3;
+}
+
+message InfoGetTask {
+	string uid = 1;
+	string key = 2;
+}
+
+message UserResult {
+	int32 errno = 1;
+	string errmsg = 2;
+	User data = 3;
+}
+
+message InfoResult {
+	int32 errno = 1;
+	string errmsg = 2;
+	Info data = 3;
+}
+
+message LoginTask {
+	string name = 1;
+	string password = 2;
+}
+
+message LoginResult {
+	int32 errno = 1;
+	string errmsg = 2;
+}
+
+message UserBatchGetTask {
+	repeated string uid = 1;
+}
+
+message UserBatchGetResult {
+	int32 errno = 1;
+	string errmsg = 2;
+	repeated User items = 3;
+}
+
+message InfoBatchGetTask {
+	repeated string uid = 1;
+	string key = 2;
+}
+
+message InfoBatchGetResult {
+	int32 errno = 1;
+	string errmsg = 2;
+	repeated Info items = 3;
+}
+
+service Service {
+	/**
+	 * 创建用户
+	 */
+	rpc UserCreate (UserCreateTask) returns (UserResult);
+	/**
+	 * 修改用户
+	 */
+	rpc UserSet (UserSetTask) returns (UserResult);
+	/**
+	 * 获取单个用户
+	 */
+	rpc UserGet (UserGetTask) returns (UserResult);
+	/**
+	 * 查询多个用户
+	 */
+	rpc UserQuery (UserQueryTask) returns (UserQueryResult);
+
+	/**
+	 * 设置用户信息
+	 */
+	rpc InfoSet (InfoSetTask) returns (InfoResult);
+	/**
+	 * 获取用户信息
+	 */
+	rpc InfoGet (InfoGetTask) returns (InfoResult);
+	/**
+	 * 登录
+	 */
+	rpc Login(LoginTask) returns (LoginResult);
+	/**
+	 * 批量获取用户
+	 */
+	rpc UserBatchGet(UserBatchGetTask) returns (UserBatchGetResult);
+	/**
+	 * 批量获取用户信息
+	 */
+	rpc InfoBatchGet(InfoBatchGetTask) returns (InfoBatchGetResult);
+}
+
